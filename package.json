@@ -1,0 +1,167 @@
+{
+  "name": "quarterlight",
+  "displayName": "Quarterlight",
+  "description": "Four calm, low-glare dark themes that change with the seasons, plus eye-comfort settings and a 20-20-20 break reminder. Designed for astigmatism and tired eyes.",
+  "version": "1.0.0",
+  "publisher": "ElizabethLopez",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FrizzieLizzie/quarterlight.git"
+  },
+  "homepage": "https://github.com/FrizzieLizzie/quarterlight#readme",
+  "bugs": {
+    "url": "https://github.com/FrizzieLizzie/quarterlight/issues"
+  },
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#2B2622",
+    "theme": "dark"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Themes",
+    "Other"
+  ],
+  "keywords": [
+    "theme",
+    "dark theme",
+    "seasonal",
+    "accessibility",
+    "astigmatism",
+    "low vision",
+    "eye strain",
+    "low contrast",
+    "warm",
+    "20-20-20"
+  ],
+  "extensionKind": [
+    "ui"
+  ],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "Quarterlight Autumn",
+        "uiTheme": "vs-dark",
+        "path": "./themes/quarterlight-autumn.json"
+      },
+      {
+        "label": "Quarterlight Winter",
+        "uiTheme": "vs-dark",
+        "path": "./themes/quarterlight-winter.json"
+      },
+      {
+        "label": "Quarterlight Spring",
+        "uiTheme": "vs-dark",
+        "path": "./themes/quarterlight-spring.json"
+      },
+      {
+        "label": "Quarterlight Summer",
+        "uiTheme": "vs-dark",
+        "path": "./themes/quarterlight-summer.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "quarterlight.useCurrentSeason",
+        "title": "Use the Current Season's Theme",
+        "category": "Quarterlight"
+      },
+      {
+        "command": "quarterlight.applyComfortSettings",
+        "title": "Apply Eye-Comfort Settings",
+        "category": "Quarterlight"
+      },
+      {
+        "command": "quarterlight.restoreSettings",
+        "title": "Restore My Previous Settings",
+        "category": "Quarterlight"
+      },
+      {
+        "command": "quarterlight.installFont",
+        "title": "Install the Atkinson Hyperlegible Mono Font",
+        "category": "Quarterlight"
+      },
+      {
+        "command": "quarterlight.startBreak",
+        "title": "Start a 20-Second Eye Break",
+        "category": "Quarterlight"
+      },
+      {
+        "command": "quarterlight.remindNow",
+        "title": "Show the Break Reminder Now",
+        "category": "Quarterlight"
+      }
+    ],
+    "configuration": {
+      "title": "Quarterlight",
+      "properties": {
+        "quarterlight.autoSeason": {
+          "type": "boolean",
+          "default": true,
+          "description": "Change to the current season's theme automatically when a Quarterlight theme is in use."
+        },
+        "quarterlight.southernHemisphere": {
+          "type": "boolean",
+          "default": false,
+          "description": "Flip the seasons for the southern hemisphere (summer in December)."
+        },
+        "quarterlight.seasonStarts.spring": {
+          "type": "string",
+          "default": "03-20",
+          "pattern": "^[0-9]{2}-[0-9]{2}$",
+          "description": "First day of spring, as MM-DD."
+        },
+        "quarterlight.seasonStarts.summer": {
+          "type": "string",
+          "default": "06-21",
+          "pattern": "^[0-9]{2}-[0-9]{2}$",
+          "description": "First day of summer, as MM-DD."
+        },
+        "quarterlight.seasonStarts.autumn": {
+          "type": "string",
+          "default": "09-22",
+          "pattern": "^[0-9]{2}-[0-9]{2}$",
+          "description": "First day of autumn, as MM-DD."
+        },
+        "quarterlight.seasonStarts.winter": {
+          "type": "string",
+          "default": "12-21",
+          "pattern": "^[0-9]{2}-[0-9]{2}$",
+          "description": "First day of winter, as MM-DD."
+        },
+        "quarterlight.breakReminder.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Remind you to rest your eyes: look about 20 feet away for 20 seconds."
+        },
+        "quarterlight.breakReminder.intervalMinutes": {
+          "type": "number",
+          "default": 20,
+          "minimum": 5,
+          "maximum": 120,
+          "description": "Minutes of VS Code use between eye-break reminders. Five minutes away from VS Code counts as a break."
+        },
+        "quarterlight.breakReminder.style": {
+          "type": "string",
+          "default": "popup",
+          "enum": [
+            "popup",
+            "statusBar"
+          ],
+          "enumDescriptions": [
+            "A notification in the corner with a 20-second timer button.",
+            "Quiet text in the status bar only."
+          ],
+          "description": "How the eye-break reminder appears."
+        }
+      }
+    }
+  }
+}

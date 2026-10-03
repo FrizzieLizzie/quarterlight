@@ -1,0 +1,59 @@
+# Quarterlight
+
+Four calm, low-glare dark themes that change with the seasons. Quarterlight is designed for long working days, astigmatism and tired eyes.
+
+![Quarterlight Autumn](images/autumn.png)
+
+## What makes it easier on the eyes
+
+- **A dim background, never black.** Bright text on pure black makes letters glow and blur for people with astigmatism, an effect called halation. Quarterlight's warm charcoal backgrounds sit around 15% lightness.
+- **Measured contrast.** Main text is about 11:1 (APCA Lc 82). That's above the comfortable-reading minimum and well below the 21:1 of white on black. Every code color has the same brightness (about 8.5:1, Lc 68), so no single color pulls your eye across the screen. Comments are softer but still readable (about 6:1, Lc 52).
+- **Muted colors.** Bright saturated reds and blues side by side can make edges appear to shimmer. All the colors here are softened.
+- **No italics** in code, because slanted letters are harder to read with low vision.
+
+## The four seasons
+
+| Season | Starts | Feel |
+|---|---|---|
+| Autumn | Sep 22 | Marigold, brass and candlelight on walnut |
+| Winter | Dec 21 | Black pine, frost and holly |
+| Spring | Mar 20 | Violets, daffodils and new moss |
+| Summer | Jun 21 | Midsummer dusk: honey, sea glass and wild berries |
+
+When a Quarterlight theme is in use, it switches to the current season on its own. If you pick a different season by hand, automatic switching pauses until you run **Quarterlight: Use the Current Season's Theme**. You can change the start dates, or flip the seasons for the southern hemisphere, in Settings.
+
+### Screenshots
+
+| Winter | Spring |
+|---|---|
+| ![Quarterlight Winter](images/winter.png) | ![Quarterlight Spring](images/spring.png) |
+
+| Summer | Autumn |
+|---|---|
+| ![Quarterlight Summer](images/summer.png) | ![Quarterlight Autumn](images/autumn.png) |
+
+## Eye-comfort settings (optional)
+
+Run **Quarterlight: Apply Eye-Comfort Settings** from the Command Palette (`Ctrl+Shift+P`, or `Cmd+Shift+P` on a Mac). It:
+
+- uses Atkinson Hyperlegible Mono, a free font from the Braille Institute designed for low vision, at 17px with extra line spacing
+- turns off cursor blinking, smooth scrolling and other animations
+- hides the minimap and softens highlights
+
+**Quarterlight: Restore My Previous Settings** puts everything back the way it was.
+
+The font comes with the extension. **Quarterlight: Install the Atkinson Hyperlegible Mono Font** installs it for your account only, with no administrator rights needed. Then close and reopen VS Code.
+
+## 20-20-20 break reminder
+
+Every 20 minutes of VS Code use, a small notification reminds you to look at something about 20 feet (6 m) away for 20 seconds. This is the break the American Academy of Ophthalmology recommends for digital eye strain. Click **Start 20-Second Timer** for a countdown in the status bar. If you're away from VS Code for five minutes, that counts as a break. With several windows open, you still get only one reminder.
+
+In Settings, under `quarterlight.breakReminder`, you can change the interval, switch to a quiet status-bar-only reminder, or turn it off.
+
+## A note on eye health
+
+A theme can make the screen more comfortable, but it doesn't replace an eye exam. If your eyes lose focus or seem to jump on their own, talk to an optometrist or ophthalmologist.
+
+## License
+
+The themes and extension code are MIT-licensed. Atkinson Hyperlegible Mono is © the Braille Institute of America and is included under the SIL Open Font License 1.1 (`fonts/OFL.txt`).

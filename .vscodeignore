@@ -1,0 +1,6 @@
+scripts/**
+*.vsix
+.git/**
+.gitignore
+preview/**
+images/**

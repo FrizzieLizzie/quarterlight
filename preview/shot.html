@@ -1,0 +1,40 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Quarterlight screenshot</title>
+<style>
+@font-face { font-family: "AHM"; src: url("../fonts/AtkinsonHyperlegibleMono[wght].ttf"); font-weight: 200 800; }
+html, body { margin: 0; }
+body { width: 1280px; height: 760px; display: grid; grid-template-columns: 48px 230px 1fr; grid-template-rows: 1fr 26px; font: 14px/1.4 "Segoe UI", system-ui, sans-serif; background: var(--bg); color: var(--text); overflow: hidden; }
+.act { background: var(--chrome); border-right: 1px solid var(--line); display: grid; align-content: start; gap: 22px; padding-top: 14px; justify-items: center; }
+.act i { width: 22px; height: 22px; border: 2px solid var(--muted); border-radius: 5px; display: block; }
+.act i.on { border-color: var(--accent); }
+.side { background: var(--chrome); border-right: 1px solid var(--line); padding: 10px 0; }
+.side h6 { margin: 0 14px 8px; font-size: 11px; letter-spacing: .08em; color: var(--status); font-weight: 600; }
+.side div { padding: 3px 22px; color: var(--text); }
+.side div.d { color: var(--muted); padding-left: 14px; }
+.side div.sel { background: var(--selList); }
+.side .m { color: var(--info); } .side .a { color: var(--ok); }
+.ed { display: grid; grid-template-rows: 36px 1fr; min-width: 0; }
+.tabs { display: flex; background: var(--chrome); border-bottom: 1px solid var(--line); }
+.tabs span { padding: 9px 16px; color: var(--muted); border-right: 1px solid var(--line); }
+.tabs span.on { background: var(--bg); color: var(--text); box-shadow: inset 0 2px 0 var(--accent); }
+pre { margin: 0; padding: 10px 0; font: 500 17px/1.7 "AHM", Consolas, monospace; letter-spacing: .3px; }
+.ln { display: block; padding-right: 20px; }
+.ln::before { content: attr(data-n); display: inline-block; width: 52px; padding-right: 18px; text-align: right; color: var(--lnum); }
+.ln.cur { background: var(--raise); } .ln.cur::before { color: var(--text); }
+.sel { background: var(--sel); }
+.k{color:var(--keyword)} .f{color:var(--function)} .s{color:var(--string)} .t{color:var(--type)} .n{color:var(--number)} .c{color:var(--constant)} .cm{color:var(--comment)}
+.caret { border-left: 2px solid var(--accent); }
+.status { grid-column: 1 / -1; background: var(--chrome); border-top: 1px solid var(--line); color: var(--status); display: flex; gap: 22px; padding: 4px 14px; font-size: 12.5px; }
+.status .r { margin-left: auto; }
+</style></head>
+<body>
+<nav class="act"><i class="on"></i><i></i><i></i><i></i></nav>
+<aside class="side"><h6>EXPLORER</h6><div class="d">▾ reading-log</div><div class="sel">reading_log.py <span class="m">M</span></div><div>shelf.json</div><div>notes.md <span class="a">U</span></div><div>README.md</div></aside>
+<section class="ed"><div class="tabs"><span class="on">reading_log.py</span><span>shelf.json</span><span>notes.md</span></div>
+<pre><span class="ln" data-n="1"><span class="cm"># Track the pages read this week</span></span><span class="ln" data-n="2"><span class="k">from</span> dataclasses <span class="k">import</span> dataclass</span><span class="ln" data-n="3"> </span><span class="ln" data-n="4"><span class="f">@dataclass</span></span><span class="ln" data-n="5"><span class="k">class</span> <span class="t">Book</span>:</span><span class="ln" data-n="6">    title: <span class="t">str</span></span><span class="ln" data-n="7">    pages: <span class="t">int</span> = <span class="n">0</span></span><span class="ln" data-n="8"> </span><span class="ln" data-n="9"><span class="c">GOAL_PAGES</span> = <span class="n">350</span></span><span class="ln cur" data-n="10">shelf = [<span class="t">Book</span>(<span class="s">"Jane Eyre"</span>, <span class="n">532</span>), <span class="t">Book</span>(<span class="s">"<span class="sel">Dracula</span>"</span>, <span class="n">418</span>)]<span class="caret"></span></span><span class="ln" data-n="11"> </span><span class="ln" data-n="12"><span class="k">def</span> <span class="f">weekly_total</span>(books: <span class="t">list</span>[<span class="t">Book</span>]) -&gt; <span class="t">int</span>:</span><span class="ln" data-n="13">    <span class="s">"""Add up the pages on the shelf."""</span></span><span class="ln" data-n="14">    <span class="k">return</span> <span class="f">sum</span>(b.pages <span class="k">for</span> b <span class="k">in</span> books <span class="k">if</span> b.pages &gt; <span class="n">0</span>)</span><span class="ln" data-n="15"> </span><span class="ln" data-n="16"><span class="k">if</span> <span class="f">weekly_total</span>(shelf) &gt;= <span class="c">GOAL_PAGES</span>:</span><span class="ln" data-n="17">    <span class="f">print</span>(<span class="s">"Goal met"</span>, <span class="c">True</span>)</span></pre></section>
+<footer class="status"><span>⎇ main</span><span>0 problems</span><span class="r">Ln 10, Col 62</span><span>Python</span><span id="name"></span></footer>
+<script>
+const SEASON = location.hash.slice(1) || "Autumn";
+</script>
+<script src="vars.js"></script>
+</body></html>
