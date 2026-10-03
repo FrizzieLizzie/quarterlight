@@ -22,6 +22,7 @@ SOFTWARE.
 
 ---
 
-The font files in the "fonts" folder (Atkinson Hyperlegible Mono) are
-Copyright the Braille Institute of America, Inc., and are licensed under the
-SIL Open Font License, Version 1.1. See fonts/OFL.txt.
+The font files in the repository's "fonts" folder (Atkinson Hyperlegible Mono)
+are Copyright the Braille Institute of America, Inc., and are licensed under
+the SIL Open Font License, Version 1.1. See fonts/OFL.txt. They are used only
+to render screenshots and are not included in the extension package.

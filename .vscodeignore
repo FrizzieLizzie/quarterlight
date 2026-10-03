@@ -4,3 +4,4 @@ scripts/**
 .gitignore
 preview/**
 images/**
+fonts/**

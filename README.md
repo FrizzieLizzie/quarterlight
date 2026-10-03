@@ -42,7 +42,7 @@ Run **Quarterlight: Apply Eye-Comfort Settings** from the Command Palette (`Ctrl
 
 **Quarterlight: Restore My Previous Settings** puts everything back the way it was.
 
-The font comes with the extension. **Quarterlight: Install the Atkinson Hyperlegible Mono Font** installs it for your account only, with no administrator rights needed. Then close and reopen VS Code.
+The font is free from Google Fonts. **Quarterlight: Get the Atkinson Hyperlegible Mono Font** opens its download page. Install it once on each computer, then close and reopen VS Code. Until then, VS Code uses a similar built-in font.
 
 ## 20-20-20 break reminder
 
@@ -67,4 +67,4 @@ npx @vscode/vsce package              # builds the .vsix installer
 
 ## License
 
-The themes and extension code are MIT-licensed. Atkinson Hyperlegible Mono is © the Braille Institute of America and is included under the SIL Open Font License 1.1 (`fonts/OFL.txt`).
+The themes and extension code are MIT-licensed. Atkinson Hyperlegible Mono is © the Braille Institute of America, under the SIL Open Font License 1.1. A copy is kept in this repository's `fonts/` folder for the screenshot script; it isn't part of the extension package.

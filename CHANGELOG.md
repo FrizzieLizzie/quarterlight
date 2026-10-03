@@ -5,4 +5,4 @@
 - Automatic season switching, with custom start dates and a southern-hemisphere option.
 - Eye-comfort settings with one-click restore.
 - 20-20-20 break reminder that works across several open windows.
-- Bundled Atkinson Hyperlegible Mono font with a one-click per-user install.
+- A command that opens the free Atkinson Hyperlegible Mono download page.

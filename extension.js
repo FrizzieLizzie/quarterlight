@@ -3,10 +3,10 @@ const vscode = require("vscode");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { execFile } = require("child_process");
 
 const SEASONS = ["Winter", "Spring", "Summer", "Autumn"];
 const THEME_PREFIX = "Quarterlight ";
+const FONT_PAGE = "https://fonts.google.com/specimen/Atkinson+Hyperlegible+Mono";
 const FONT_STACK = "'Atkinson Hyperlegible Mono', 'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace";
 
 // Settings applied by "Apply Eye-Comfort Settings". Each one is undone by "Restore My Previous Settings".
@@ -102,9 +102,9 @@ async function applyComfort() {
   if (!fontInstalled()) {
     const pick = await vscode.window.showInformationMessage(
       "Eye-comfort settings are on. The Atkinson Hyperlegible Mono font isn't on this computer yet, so a similar font is being used for now.",
-      "Install the Font"
+      "Get the Font"
     );
-    if (pick) await installFont();
+    if (pick) await getFont();
   } else {
     vscode.window.showInformationMessage("Eye-comfort settings are on.");
   }
@@ -147,32 +147,12 @@ function fontInstalled() {
   });
 }
 
-function run(cmd, args) {
-  return new Promise((resolve, reject) => execFile(cmd, args, (err) => (err ? reject(err) : resolve())));
-}
-
-async function installFont() {
-  const src = path.join(ctx.extensionPath, "fonts");
-  const dest = fontDirs()[0];
-  try {
-    fs.mkdirSync(dest, { recursive: true });
-    for (const f of fs.readdirSync(src).filter((name) => name.endsWith(".ttf"))) {
-      const target = path.join(dest, f);
-      fs.copyFileSync(path.join(src, f), target);
-      if (process.platform === "win32") {
-        const label = "Atkinson Hyperlegible Mono" + (f.includes("Italic") ? " Italic" : "") + " (TrueType)";
-        await run("reg", ["add", "HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Fonts", "/v", label, "/t", "REG_SZ", "/d", target, "/f"]);
-      }
-    }
-    if (process.platform === "linux") await run("fc-cache", ["-f"]).catch(() => {});
-    vscode.window.showInformationMessage(
-      "The font is installed for your account. Close every VS Code window and open VS Code again to see it."
-    );
-  } catch (err) {
-    vscode.window.showErrorMessage(
-      `The font couldn't be installed (${err.message}). You can install it by hand: open the "fonts" folder inside the extension and double-click each .ttf file.`
-    );
-  }
+// Opens the free Google Fonts page; installing a font is left to the operating system.
+async function getFont() {
+  await vscode.env.openExternal(vscode.Uri.parse(FONT_PAGE));
+  vscode.window.showInformationMessage(
+    "On the page, click \"Get font\", then \"Download all\". Open the downloaded zip, right-click each .ttf file and choose Install. Then close and reopen VS Code."
+  );
 }
 
 // ---------- 20-20-20 break reminder ----------
@@ -284,9 +264,9 @@ async function offerFontOnThisComputer() {
   await ctx.globalState.update("ql.fontAsked", true);
   const pick = await vscode.window.showInformationMessage(
     "Your Quarterlight font settings came over from another computer, but the Atkinson Hyperlegible Mono font isn't installed on this one.",
-    "Install the Font"
+    "Get the Font"
   );
-  if (pick) await installFont();
+  if (pick) await getFont();
 }
 
 // ---------- activation ----------
@@ -304,7 +284,7 @@ function activate(context) {
     }),
     vscode.commands.registerCommand("quarterlight.applyComfortSettings", applyComfort),
     vscode.commands.registerCommand("quarterlight.restoreSettings", restoreComfort),
-    vscode.commands.registerCommand("quarterlight.installFont", installFont),
+    vscode.commands.registerCommand("quarterlight.getFont", getFont),
     vscode.commands.registerCommand("quarterlight.startBreak", () => {
       statusItem.hide();
       startCountdown();

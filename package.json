@@ -84,8 +84,8 @@
         "category": "Quarterlight"
       },
       {
-        "command": "quarterlight.installFont",
-        "title": "Install the Atkinson Hyperlegible Mono Font",
+        "command": "quarterlight.getFont",
+        "title": "Get the Atkinson Hyperlegible Mono Font",
         "category": "Quarterlight"
       },
       {
