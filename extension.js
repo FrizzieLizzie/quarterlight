@@ -39,30 +39,26 @@ const COMFORT = {
 let ctx;
 let switchingTheme = false;
 let statusItem;
+let statusHideTimer;
 let countdownTimer;
 
 // ---------- seasons ----------
+// Dates are compared as MMDD numbers, so "03-20" becomes 320 and October 3 becomes 1003.
 function seasonFor(date, starts) {
-  const md = (date.getMonth() + 1) * 100 + date.getDate();
-  const n = (s) => {
-    const [m, d] = String(s).split("-").map(Number);
-    return m * 100 + d;
-  };
-  const spring = n(starts.spring), summer = n(starts.summer), autumn = n(starts.autumn), winter = n(starts.winter);
-  if (md >= winter || md < spring) return "Winter";
-  if (md < summer) return "Spring";
-  if (md < autumn) return "Summer";
+  const today = (date.getMonth() + 1) * 100 + date.getDate();
+  const [spring, summer, autumn, winter] = [starts.spring, starts.summer, starts.autumn, starts.winter]
+    .map((mmdd) => Number(mmdd.replace("-", "")));
+  if (today >= winter || today < spring) return "Winter";
+  if (today < summer) return "Spring";
+  if (today < autumn) return "Summer";
   return "Autumn";
 }
 
 function currentSeason() {
   const cfg = vscode.workspace.getConfiguration("quarterlight");
-  const starts = {
-    spring: cfg.get("seasonStarts.spring", "03-20"),
-    summer: cfg.get("seasonStarts.summer", "06-21"),
-    autumn: cfg.get("seasonStarts.autumn", "09-22"),
-    winter: cfg.get("seasonStarts.winter", "12-21"),
-  };
+  const starts = Object.fromEntries(
+    ["spring", "summer", "autumn", "winter"].map((s) => [s, cfg.get(`seasonStarts.${s}`)])
+  );
   let season = seasonFor(new Date(), starts);
   if (cfg.get("southernHemisphere", false)) {
     season = SEASONS[(SEASONS.indexOf(season) + 2) % 4];
@@ -99,10 +95,7 @@ async function applyComfort() {
     const dot = key.lastIndexOf(".");
     const section = vscode.workspace.getConfiguration(key.slice(0, dot));
     const leaf = key.slice(dot + 1);
-    if (!(key in saved)) {
-      const before = section.inspect(leaf);
-      saved[key] = before ? before.globalValue ?? null : null;
-    }
+    if (!(key in saved)) saved[key] = section.inspect(leaf)?.globalValue ?? null;
     await section.update(leaf, value, vscode.ConfigurationTarget.Global);
   }
   await ctx.globalState.update("ql.previousSettings", saved);
@@ -160,11 +153,10 @@ function run(cmd, args) {
 
 async function installFont() {
   const src = path.join(ctx.extensionPath, "fonts");
-  const files = fs.readdirSync(src).filter((f) => f.endsWith(".ttf"));
   const dest = fontDirs()[0];
   try {
     fs.mkdirSync(dest, { recursive: true });
-    for (const f of files) {
+    for (const f of fs.readdirSync(src).filter((name) => name.endsWith(".ttf"))) {
       const target = path.join(dest, f);
       fs.copyFileSync(path.join(src, f), target);
       if (process.platform === "win32") {
@@ -216,23 +208,23 @@ function breakTick() {
   if (now - s.lastSeen > 5 * 60000) s.lastBreak = now;
   s.lastSeen = now;
   const due = now - s.lastBreak >= cfg.get("intervalMinutes", 20) * 60000 && now >= (s.snoozeUntil || 0);
-  if (due) {
-    s.lastBreak = now; // claim this reminder before another window does
-    writeState(s);
-    remind();
-  } else {
-    writeState(s);
-  }
+  if (due) s.lastBreak = now; // claim this reminder before another window does
+  writeState(s);
+  if (due) remind();
 }
 
 async function remind() {
   const cfg = vscode.workspace.getConfiguration("quarterlight.breakReminder");
-  const text = "20-20-20 break: look at something about 20 feet (6 m) away for 20 seconds, and blink slowly a few times.";
   if (cfg.get("style", "popup") === "statusBar") {
     showStatus("$(eye) Look away for 20 seconds", "quarterlight.startBreak", 60000);
     return;
   }
-  const pick = await vscode.window.showInformationMessage(text, "Start 20-Second Timer", "Snooze 5 Minutes", "Settings");
+  const pick = await vscode.window.showInformationMessage(
+    "20-20-20 break: look at something about 20 feet (6 m) away for 20 seconds, and blink slowly a few times.",
+    "Start 20-Second Timer",
+    "Snooze 5 Minutes",
+    "Settings"
+  );
   if (pick === "Start 20-Second Timer") startCountdown();
   if (pick === "Snooze 5 Minutes") {
     const s = readState();
@@ -263,11 +255,12 @@ function startCountdown() {
 }
 
 function showStatus(text, command, hideAfter) {
+  clearTimeout(statusHideTimer); // a newer message must not be hidden by an older message's timer
   statusItem.text = text;
   statusItem.command = command;
   statusItem.tooltip = "Quarterlight 20-20-20 break";
   statusItem.show();
-  if (hideAfter) setTimeout(() => statusItem.hide(), hideAfter);
+  if (hideAfter) statusHideTimer = setTimeout(() => statusItem.hide(), hideAfter);
 }
 
 // ---------- first run ----------
@@ -334,19 +327,26 @@ function activate(context) {
     })
   );
 
-  if (!context.globalState.get("ql.welcomed")) welcome();
-  else {
+  if (context.globalState.get("ql.welcomed")) {
     applySeason(false);
     offerFontOnThisComputer();
+  } else {
+    welcome();
   }
 
   const seasonCheck = setInterval(() => applySeason(false), 60 * 60000); // hourly, for windows left open across a season change
   const breakCheck = setInterval(breakTick, 60000);
-  context.subscriptions.push({ dispose: () => (clearInterval(seasonCheck), clearInterval(breakCheck)) });
+  context.subscriptions.push({
+    dispose() {
+      clearInterval(seasonCheck);
+      clearInterval(breakCheck);
+    },
+  });
 }
 
 function deactivate() {
-  if (countdownTimer) clearInterval(countdownTimer);
+  clearInterval(countdownTimer);
+  clearTimeout(statusHideTimer);
 }
 
 module.exports = { activate, deactivate, seasonFor };

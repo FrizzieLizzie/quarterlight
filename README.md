@@ -54,6 +54,17 @@ In Settings, under `quarterlight.breakReminder`, you can change the interval, sw
 
 A theme can make the screen more comfortable, but it doesn't replace an eye exam. If your eyes lose focus or seem to jump on their own, talk to an optometrist or ophthalmologist.
 
+## Building from source
+
+The palettes live in `scripts/palettes.json`. After editing them:
+
+```
+python scripts/build_themes.py        # writes themes/, refuses if any color misses its contrast target
+python scripts/build_screenshots.py   # optional: refreshes images/ (needs Microsoft Edge)
+node --test scripts/test_seasons.js   # checks the season dates
+npx @vscode/vsce package              # builds the .vsix installer
+```
+
 ## License
 
 The themes and extension code are MIT-licensed. Atkinson Hyperlegible Mono is © the Braille Institute of America and is included under the SIL Open Font License 1.1 (`fonts/OFL.txt`).
