@@ -4,6 +4,10 @@ Four calm, low-glare dark themes that change with the seasons. Quarterlight is d
 
 ![Quarterlight Autumn](images/autumn.png)
 
+## Install
+
+Search **Quarterlight** in VS Code's Extensions view. If it isn't listed yet, download `quarterlight-1.0.0.vsix` from the [Releases page](https://github.com/FrizzieLizzie/quarterlight/releases/latest). Then in the Extensions view, open the **...** menu and choose **Install from VSIX...**.
+
 ## What makes it easier on the eyes
 
 - **A dim background, never black.** Bright text on pure black makes letters glow and blur for people with astigmatism, an effect called halation. Quarterlight's warm charcoal backgrounds sit around 15% lightness.
