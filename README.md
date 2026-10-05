@@ -6,7 +6,7 @@ Four calm, low-glare dark themes that change with the seasons. Quarterlight is d
 
 ## Install
 
-Search **Quarterlight** in VS Code's Extensions view. If it isn't listed yet, download `quarterlight-1.0.0.vsix` from the [Releases page](https://github.com/FrizzieLizzie/quarterlight/releases/latest). Then in the Extensions view, open the **...** menu and choose **Install from VSIX...**.
+Search **Quarterlight** in VS Code's Extensions view. If it isn't listed yet, download the `.vsix` file from the [Releases page](https://github.com/FrizzieLizzie/quarterlight/releases/latest). Then in the Extensions view, open the **...** menu and choose **Install from VSIX...**.
 
 ## What makes it easier on the eyes
 
@@ -50,7 +50,7 @@ The font is free from Google Fonts. **Quarterlight: Get the Atkinson Hyperlegibl
 
 ## 20-20-20 break reminder
 
-Every 20 minutes of VS Code use, a small notification reminds you to look at something about 20 feet (6 m) away for 20 seconds. This is the break the American Academy of Ophthalmology recommends for digital eye strain. Click **Start 20-Second Timer** for a countdown in the status bar. If you're away from VS Code for five minutes, that counts as a break. With several windows open, you still get only one reminder.
+Every 20 minutes while VS Code is open, a small notification reminds you to look at something about 20 feet (6 m) away for 20 seconds. Time spent in other apps counts too, because it's still screen time. If the reminder comes due while you're in another app, it appears when you return to VS Code. This is the break the American Academy of Ophthalmology recommends for digital eye strain. Click **Start 20-Second Timer** for a countdown in the status bar. If VS Code is closed or your computer sleeps for five minutes, that counts as a break. With several windows open, you still get only one reminder.
 
 In Settings, under `quarterlight.breakReminder`, you can change the interval, switch to a quiet status-bar-only reminder, or turn it off.
 
@@ -65,7 +65,7 @@ The palettes live in `scripts/palettes.json`. After editing them:
 ```
 python scripts/build_themes.py        # writes themes/, refuses if any color misses its contrast target
 python scripts/build_screenshots.py   # optional: refreshes images/ (needs Microsoft Edge)
-node --test scripts/test_seasons.js   # checks the season dates
+node --test scripts/test_seasons.js scripts/test_breaks.js   # checks season dates and break timing
 npx @vscode/vsce package              # builds the .vsix installer
 ```
 

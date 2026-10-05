@@ -2,7 +2,7 @@
   "name": "quarterlight",
   "displayName": "Quarterlight",
   "description": "Four calm, low-glare dark themes that change with the seasons, plus eye-comfort settings and a 20-20-20 break reminder. Designed for astigmatism and tired eyes.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "ElizabethLopez",
   "license": "SEE LICENSE IN LICENSE.txt",
   "repository": {
@@ -146,7 +146,7 @@
           "default": 20,
           "minimum": 5,
           "maximum": 120,
-          "description": "Minutes of VS Code use between eye-break reminders. Five minutes away from VS Code counts as a break."
+          "description": "Minutes between eye-break reminders while VS Code is open. Five minutes with VS Code closed or the computer asleep counts as a break."
         },
         "quarterlight.breakReminder.style": {
           "type": "string",

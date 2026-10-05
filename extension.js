@@ -179,18 +179,26 @@ function writeState(s) {
   }
 }
 
-function breakTick() {
-  const cfg = vscode.workspace.getConfiguration("quarterlight.breakReminder");
-  if (!cfg.get("enabled", true) || !vscode.window.state.focused || countdownTimer) return;
-  const now = Date.now();
-  const s = readState();
-  // Five minutes with no VS Code window in focus counts as a break.
+// Every open window checks in once a minute, focused or not, because time spent in a browser or
+// another app is still screen time. Only a gap of five minutes with no check-in at all (VS Code
+// closed, or the computer asleep) counts as a break.
+function breakDecision(state, now, intervalMinutes, focused) {
+  const s = { ...state };
   if (now - s.lastSeen > 5 * 60000) s.lastBreak = now;
   s.lastSeen = now;
-  const due = now - s.lastBreak >= cfg.get("intervalMinutes", 20) * 60000 && now >= (s.snoozeUntil || 0);
-  if (due) s.lastBreak = now; // claim this reminder before another window does
-  writeState(s);
-  if (due) remind();
+  const due = now - s.lastBreak >= intervalMinutes * 60000 && now >= (s.snoozeUntil || 0);
+  // A due reminder waits for a focused window, so it appears where you'll see it, and only once.
+  const show = due && focused;
+  if (show) s.lastBreak = now;
+  return { state: s, show };
+}
+
+function breakTick() {
+  const cfg = vscode.workspace.getConfiguration("quarterlight.breakReminder");
+  if (!cfg.get("enabled", true) || countdownTimer) return;
+  const { state, show } = breakDecision(readState(), Date.now(), cfg.get("intervalMinutes", 20), vscode.window.state.focused);
+  writeState(state);
+  if (show) remind();
 }
 
 async function remind() {
@@ -290,6 +298,7 @@ function activate(context) {
       startCountdown();
     }),
     vscode.commands.registerCommand("quarterlight.remindNow", remind),
+    vscode.window.onDidChangeWindowState((state) => state.focused && breakTick()),
 
     // Picking a different season by hand pauses the automatic switching.
     vscode.workspace.onDidChangeConfiguration(async (e) => {
@@ -329,4 +338,4 @@ function deactivate() {
   clearTimeout(statusHideTimer);
 }
 
-module.exports = { activate, deactivate, seasonFor };
+module.exports = { activate, deactivate, seasonFor, breakDecision };
